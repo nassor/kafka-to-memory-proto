@@ -1,0 +1,15 @@
+syntax = "proto3";
+package api;
+
+option go_package = "api";
+option optimize_for = SPEED;
+
+import "google/protobuf/timestamp.proto";
+
+message Device {
+    string id = 1;
+    string organization_id = 2;
+    string tz = 3;
+    google.protobuf.Timestamp installed_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+}
