@@ -3,28 +3,26 @@ package device
 import (
 	"errors"
 	"sync"
-	"sync/atomic"
 	"time"
-
-	"github.com/rs/zerolog/log"
 
 	"github.com/nassor/kafka-compact-pipeline/api"
 )
 
 // InMemoryStore keep device data in a map
 type InMemoryStore struct {
-	data  *sync.Map
-	total uint64
+	store      *sync.Map
+	devicePool *sync.Pool
 }
 
 func NewInMemoryStore() *InMemoryStore {
-	st := &InMemoryStore{data: &sync.Map{}}
-	go func() {
-		for {
-			log.Debug().Msgf("total stored: %d", atomic.LoadUint64(&st.total))
-			time.Sleep(20 * time.Second)
-		}
-	}()
+	st := &InMemoryStore{
+		store: &sync.Map{},
+		devicePool: &sync.Pool{
+			New: func() interface{} {
+				return new(Device)
+			},
+		},
+	}
 	return st
 }
 
@@ -34,27 +32,36 @@ func (st *InMemoryStore) Upsert(dev *api.Device) error {
 	if err != nil {
 		return err
 	}
-	d := &Device{
-		ID:             dev.Id,
-		OrganizationID: dev.OrganizationId,
-		TZ:             tz,
+
+	d := st.devicePool.Get().(*Device)
+	d.Reset()
+	d.ID = dev.Id
+	d.OrganizationID = dev.OrganizationId
+	d.TZ = tz
+
+	data, err := d.Marshal()
+	if err != nil {
+		return err
 	}
-	if _, ok := st.data.Load(d.ID); !ok {
-		st.total = atomic.AddUint64(&st.total, 1)
-	}
-	st.data.Store(d.ID, d)
+	st.store.Store(d.ID, data)
 	return nil
 }
 
 // Get retrieve device information by id
 func (st *InMemoryStore) Get(id string) (*Device, error) {
-	v, ok := st.data.Load(id)
+	v, ok := st.store.Load(id)
 	if !ok {
 		return nil, errors.New("device not found")
 	}
-	d, ok := v.(*Device)
+	data, ok := v.([]byte)
 	if !ok {
-		return nil, errors.New("failed on convert in memory data to device")
+		return nil, errors.New("mapped data is not an byte slice")
+	}
+
+	d := st.devicePool.Get().(*Device)
+	d.Reset()
+	if err := d.Unmarshal(data); err != nil {
+		return nil, err
 	}
 	return d, nil
 }

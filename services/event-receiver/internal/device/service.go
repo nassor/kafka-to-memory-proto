@@ -1,4 +1,4 @@
-package receiver
+package device
 
 import (
 	"github.com/rs/zerolog/log"

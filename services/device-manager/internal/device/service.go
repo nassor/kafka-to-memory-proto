@@ -12,7 +12,7 @@ type Publisher interface {
 	Publish(d *api.Device) error
 }
 
-// Store represents actions to store device events
+// Storer represents actions to store device events
 type Storer interface {
 	Upsert(ctx context.Context, d *api.Device) error
 }
@@ -23,7 +23,7 @@ type Service struct {
 	st  Storer
 }
 
-// NewService creates a new device Service
+// NewService creates a new device-manager Service
 func NewService(pub Publisher, st Storer) *Service {
 	return &Service{pub: pub, st: st}
 }

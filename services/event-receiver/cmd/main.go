@@ -6,14 +6,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/segmentio/ksuid"
-
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/segmentio/ksuid"
 
-	receiver "github.com/nassor/kafka-compact-pipeline/services/event-receiver"
-	"github.com/nassor/kafka-compact-pipeline/services/event-receiver/device"
+	"github.com/nassor/kafka-compact-pipeline/services/event-receiver/internal/device"
 )
 
 func main() {
@@ -50,8 +48,8 @@ func main() {
 	// In-Memory store
 	st := device.NewInMemoryStore()
 
-	// Service
-	s := receiver.NewService(sub, st)
+	// Device Service
+	s := device.NewService(sub, st)
 	go s.ReceiveData()
 
 	// starting receive data
@@ -62,11 +60,11 @@ func main() {
 	select {
 	case <-timeout.C:
 		log.Error().Msgf("load timed out after 5 minutes")
-		signal.Stop(stopCh)
 	case total := <-sub.IsLoaded():
 		log.Info().Msgf("Finished loading %d events in %s", total, time.Since(now))
 	}
 
+	// stopping the service
 	sig := <-stopCh
 	defer close(stopCh)
 	log.Info().Msgf("stopping the consumer service. Signal: %s", sig)

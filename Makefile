@@ -10,4 +10,4 @@ clean:
 build: clean
 	@mkdir -p ./build
 	@go build -o ./build/event-receiver ./services/event-receiver/cmd
-	@go build -o ./build/device ./services/device/cmd
+	@go build -o ./build/device-manager ./services/device-manager/cmd

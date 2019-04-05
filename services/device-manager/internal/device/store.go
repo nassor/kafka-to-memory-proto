@@ -3,12 +3,12 @@ package device
 import (
 	"context"
 
-	"go.mongodb.org/mongo-driver/x/bsonx"
-
-	"github.com/nassor/kafka-compact-pipeline/api"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/x/bsonx"
+
+	"github.com/nassor/kafka-compact-pipeline/api"
 )
 
 var t = true

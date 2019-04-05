@@ -50,8 +50,6 @@ func (s *KafkaSubscriber) Listen() {
 				log.Error().Err(err).Msg("error on receiving event")
 			}
 		case kafka.PartitionEOF:
-			log.Info().Msg("BOOOOMMM")
-			// TODO add multi-partition support
 			s.loaded.Do(func() {
 				s.loadedCh <- total
 			})

@@ -18,7 +18,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/nassor/kafka-compact-pipeline/api"
-	"github.com/nassor/kafka-compact-pipeline/services/device"
+	"github.com/nassor/kafka-compact-pipeline/services/device-manager/internal/device"
 )
 
 func main() {
@@ -76,12 +76,13 @@ func main() {
 		}
 	}
 	go func() {
-		log.Info().Msg("adding 100000 random devices")
-		for i := 0; i < 100000; i++ {
+		log.Info().Msg("adding 1000000 random devices")
+		for i := 0; i < 1000000; i++ {
 			if err := s.RegisterDevice(generateRandomDevice()); err != nil {
 				log.Error().Err(err).Msg("error on adding device")
 			}
 		}
+		log.Info().Msg("========= all 1000000 random devices are added ==========")
 	}()
 	go func() {
 		for {
