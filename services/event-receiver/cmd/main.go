@@ -50,7 +50,7 @@ func main() {
 
 	// Device Service
 	s := device.NewService(sub, st)
-	go s.ReceiveData()
+	go s.Start()
 
 	// starting receive data
 	now := time.Now()

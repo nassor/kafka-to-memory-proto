@@ -18,20 +18,32 @@ type DeviceStorer interface {
 
 // Service is the integration of all event-receiver systems
 type Service struct {
-	sub DeviceSubscriber
-	st  DeviceStorer
+	sub  DeviceSubscriber
+	st   DeviceStorer
+	stop chan struct{}
 }
 
 // NewService creates a new event-receiver Service
 func NewService(sub DeviceSubscriber, st DeviceStorer) *Service {
-	return &Service{sub: sub, st: st}
+	return &Service{sub: sub, st: st, stop: make(chan struct{})}
 }
 
-// ReceiveData from the subscriber and send to the store
-func (s *Service) ReceiveData() {
-	for d := range s.sub.Receive() {
-		if err := s.st.Upsert(&d); err != nil {
-			log.Error().Err(err).Msg("on receiving device information")
+// Start receive device data from the subscriber and send to the store
+func (s *Service) Start() {
+	rcvCh := s.sub.Receive()
+	for {
+		select {
+		case d := <-rcvCh:
+			if err := s.st.Upsert(&d); err != nil {
+				log.Error().Err(err).Msg("on receiving device information")
+			}
+		case <-s.stop:
+			return
 		}
 	}
+}
+
+// Stop the device service
+func (s *Service) Stop() {
+	s.stop <- struct{}{}
 }
