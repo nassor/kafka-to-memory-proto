@@ -8,7 +8,7 @@ import (
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/gogo/protobuf/proto"
 
-	"github.com/nassor/kafka-compact-pipeline/api"
+	"github.com/nassor/kafka-to-memory-proto/api"
 )
 
 type KafkaPublisher struct {

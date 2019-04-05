@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/nassor/kafka-compact-pipeline/api"
+	"github.com/nassor/kafka-to-memory-proto/api"
 )
 
 // InMemoryStore keep device data in a map

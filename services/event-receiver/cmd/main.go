@@ -11,7 +11,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/segmentio/ksuid"
 
-	"github.com/nassor/kafka-compact-pipeline/services/event-receiver/internal/device"
+	"github.com/nassor/kafka-to-memory-proto/services/event-receiver/internal/device"
 )
 
 func main() {

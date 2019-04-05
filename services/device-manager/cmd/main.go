@@ -17,8 +17,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github.com/nassor/kafka-compact-pipeline/api"
-	"github.com/nassor/kafka-compact-pipeline/services/device-manager/internal/device"
+	"github.com/nassor/kafka-to-memory-proto/api"
+	"github.com/nassor/kafka-to-memory-proto/services/device-manager/internal/device"
 )
 
 func main() {

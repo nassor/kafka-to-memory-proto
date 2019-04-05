@@ -1,4 +1,4 @@
-module github.com/nassor/kafka-compact-pipeline
+module github.com/nassor/kafka-to-memory-proto
 
 go 1.12
 

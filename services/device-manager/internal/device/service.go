@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/nassor/kafka-compact-pipeline/api"
+	"github.com/nassor/kafka-to-memory-proto/api"
 )
 
 // Publisher represents actions to publish device events

@@ -9,7 +9,7 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/rs/zerolog/log"
 
-	"github.com/nassor/kafka-compact-pipeline/api"
+	"github.com/nassor/kafka-to-memory-proto/api"
 )
 
 type KafkaSubscriber struct {

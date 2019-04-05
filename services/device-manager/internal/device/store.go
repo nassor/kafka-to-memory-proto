@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/x/bsonx"
 
-	"github.com/nassor/kafka-compact-pipeline/api"
+	"github.com/nassor/kafka-to-memory-proto/api"
 )
 
 var t = true

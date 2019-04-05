@@ -3,7 +3,7 @@ package device
 import (
 	"github.com/rs/zerolog/log"
 
-	"github.com/nassor/kafka-compact-pipeline/api"
+	"github.com/nassor/kafka-to-memory-proto/api"
 )
 
 // DeviceSubscriber represent action for subscribe events
@@ -27,6 +27,7 @@ func NewService(sub DeviceSubscriber, st DeviceStorer) *Service {
 	return &Service{sub: sub, st: st}
 }
 
+// ReceiveData from the subscriber and send to the store
 func (s *Service) ReceiveData() {
 	for d := range s.sub.Receive() {
 		if err := s.st.Upsert(&d); err != nil {
