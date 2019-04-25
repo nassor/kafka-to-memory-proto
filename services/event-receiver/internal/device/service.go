@@ -13,7 +13,7 @@ type DeviceSubscriber interface {
 
 // DeviceStorer represents actions to store device events
 type DeviceStorer interface {
-	Upsert(d *api.Device) error
+	Upsert(*api.Device) error
 }
 
 // Service is the integration of all event-receiver systems
