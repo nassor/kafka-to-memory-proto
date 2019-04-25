@@ -35,6 +35,7 @@ func (st *InMemoryStore) Upsert(dev *api.Device) error {
 
 	d := st.devicePool.Get().(*Device)
 	d.Reset()
+	defer func() { st.devicePool.Put(d) }()
 	d.ID = dev.Id
 	d.OrganizationID = dev.OrganizationId
 	d.TZ = tz
